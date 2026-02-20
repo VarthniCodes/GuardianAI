@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NeoClaw Guardian Demo</title>
+</head>
+
+<body style="font-family: Arial; padding: 40px">
+
+<h2>👶 NeoClaw Child Safety Demo</h2>
+
+<p>Simulated Chat:</p>
+
+<textarea id="chat" rows="5" cols="50" placeholder="Type message..."></textarea>
+
+<h3>👨‍👩‍👧 Parent Dashboard</h3>
+<div id="dashboard"></div>
+
+<script>
+const chat = document.getElementById("chat")
+const dashboard = document.getElementById("dashboard")
+
+let incidents = []
+
+chat.addEventListener("input", () => {
+  const text = chat.value.toLowerCase()
+
+  if (
+    text.includes("stupid") ||
+    text.includes("useless") ||
+    text.includes("hate you") ||
+    text.includes("go die")
+  ) {
+    showWarning()
+    saveIncident(text)
+  }
+})
+
+function showWarning() {
+  alert("⚠ This message may be harmful. Please rethink your words.")
+}
+
+function saveIncident(text) {
+  incidents.push({
+    message: text,
+    time: new Date().toLocaleString()
+  })
+
+  updateDashboard()
+}
+
+function updateDashboard() {
+  dashboard.innerHTML = incidents
+    .map(i => `<p>⚠ ${i.message} — ${i.time}</p>`)
+    .join("")
+}
+</script>
+
+</body>
+</html>
