@@ -26,9 +26,6 @@ const dashboard = document.getElementById("dashboard")
 let incidents = []
 let riskScore = 0
 
-// ⭐ REPLACE WITH YOUR OPENAI KEY
-const OPENAI_API_KEY = "PASTE_YOUR_KEY_HERE"
-
 
 // ===============================
 // CHILD MESSAGE CHECK
@@ -65,32 +62,28 @@ async function checkIncoming() {
 
 
 // ===============================
-// AI MODERATION CHECK
+// FAKE AI MODERATION (Hackathon Demo)
 // ===============================
 async function checkWithAI(text) {
-  try {
-    const response = await fetch(
-      "https://api.openai.com/v1/moderations",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + OPENAI_API_KEY
-        },
-        body: JSON.stringify({
-          model: "omni-moderation-latest",
-          input: text
-        })
-      }
-    )
+  text = text.toLowerCase()
 
-    const data = await response.json()
-    return data.results[0].flagged
+  const harmfulPatterns = [
+    "stupid",
+    "idiot",
+    "kill",
+    "hate",
+    "die",
+    "hurt",
+    "loser",
+    "worthless",
+    "shut up",
+    "ugly",
+    "dumb",
+    "go away",
+    "nobody likes you"
+  ]
 
-  } catch (err) {
-    console.log("AI error", err)
-    return false
-  }
+  return harmfulPatterns.some(word => text.includes(word))
 }
 
 
@@ -101,7 +94,6 @@ function showWarning(text) {
   const message = document.createElement("div")
 
   message.innerHTML = `<b>${text}</b>`
-
   message.style.position = "fixed"
   message.style.top = "20px"
   message.style.right = "20px"
